@@ -5,10 +5,7 @@ public class Main {
     private static final int THREADS = 4;
 
     public static void main(String[] args) {
-
-
         Server server = new Server(PORT, THREADS);
         server.startServer();
-
     }
 }

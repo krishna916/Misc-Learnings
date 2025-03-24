@@ -1,5 +1,8 @@
 package me.krishnamurti.concurrency.tcp_server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
+    private static final Logger logger = LoggerFactory.getLogger(Server.class);
+
     private final int port;
     private final ExecutorService executorService;
 
@@ -22,7 +27,7 @@ public class Server {
 
     public void startServer() {
         try (ServerSocket serverSocket = new ServerSocket(this.port)) {
-            System.out.println("Server listening on: " + this.port);
+           logger.info("Server listening on: " + this.port);
             while (true) {
                 acceptConnection(serverSocket);
             }
@@ -37,13 +42,13 @@ public class Server {
 
     public void acceptConnection(ServerSocket socket) throws IOException {
         var clientSocket = socket.accept();
-        System.out.println("New connection from: " + clientSocket.getInetAddress());
+        logger.info("New connection from: " + clientSocket.getInetAddress());
 
         executorService.submit(() ->processConnection(clientSocket));
     }
 
     private void processConnection(Socket socket) {
-        System.out.println("Started new request!!");
+        logger.info("Started new request!!");
 
         byte[] bytes = new byte[1024];
         try {
